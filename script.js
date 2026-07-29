@@ -1,0 +1,75 @@
+const timer = document.getElementById("timer");
+const progressBar = document.getElementById("progressBar");
+
+const startBtn = document.getElementById("start");
+const resetBtn = document.getElementById("reset");
+
+
+
+let totalTime = 60;
+let timeLeft = 60;
+let interval = null;
+
+function updateDisplay() {
+
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+
+    timer.innerText =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    if (timeLeft <= 10) {
+        timer.style.color = "red";
+        progressBar.style.backgroundColor = "red";
+    } else {
+        timer.style.color = "green";
+        progressBar.style.backgroundColor = "green";
+    }
+
+    
+    let progress = (timeLeft / totalTime) * 100;
+    progressBar.style.width = progress + "%";
+}
+
+startBtn.addEventListener("click", () => {
+
+    if (interval !== null) return;
+
+    interval = setInterval(() => {
+
+        if (timeLeft > 0) {
+
+            timeLeft--;
+            updateDisplay();
+
+        } else {
+
+            clearInterval(interval);
+            interval = null;
+
+           
+
+            alert("Time's Up!");
+
+        }
+
+    }, 1000);
+
+});
+
+resetBtn.addEventListener("click", () => {
+
+    clearInterval(interval);
+    interval = null;
+
+    timeLeft = totalTime;
+
+   
+
+    updateDisplay();
+
+});
+
+updateDisplay();
